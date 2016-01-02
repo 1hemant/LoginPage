@@ -6,8 +6,10 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html" />
 <link rel="import" href="../bower_components/iron-form/iron-form.html" />
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html" />
+<script src="../js/default.js" type="text/javascript"></script>
+
 <dom-module id="login-page" attributes="url">
-    <script>var urlLogin = "https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/UAT/Landing Page/Telecom Business Brain/Categories/Network Management/Network Insights.cda&dataAccessId=DonutChart&parampWeekEnd='26-Apr-2015'&parampDate='All'&parampFlag='All'&parampDistrict='All'&parampCity='All'&parampHour='All'&parampBTS='All'&parampDonut='All'"</script>
+<!--    <script>var urlLogin = "https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/UAT/Landing Page/Telecom Business Brain/Categories/Network Management/Network Insights.cda&dataAccessId=DonutChart&parampWeekEnd='26-Apr-2015'&parampDate='All'&parampFlag='All'&parampDistrict='All'&parampCity='All'&parampHour='All'&parampBTS='All'&parampDonut='All'"</script>-->
         <template>
             <hgroup>
               <h1>Netlink Login Form</h1>
@@ -31,28 +33,49 @@
     <script>
         Polymer({
            is: "login-page",
+           properties: {
+               status:{
+                   type: Boolean,
+                   value: false,
+                   notify: true,
+                   observer: 'statusObserver'
+               }
+           },
+           statusObserver: function(){
+                console.log("Login_page: "+this.status);
+           },
          /*  gologin: function(e) {
                 window.location.href = e.target.getAttribute('link');
             },*/
             gologin: function(e){
+                if((this.username == "admin")&&(this.password == "admin"))
+                {
+                    this.status = true;
+                }
                  //document.getElementById('form').submit();
                  //console.log("Submitted");
+                 /*
                  $.ajaxSetup({
                     headers: {
-                      'Authorization': "Basic " + btoa('iostest@netlink.com' + ":" + 'test1234')
+                      'Authorization': "Basic " + btoa('iostest@netlink.co' + ":" + 'test1234')
                     }
                   });
                     var cat = [];
                     var data = [];
                     $.get(urlLogin).done(function (e) {
-                        console.log(e);
+                        //console.log(e);
                         for(i = 0; i < e.resultset.length; ++i){
                             cat.push(e.resultset[i][3]);
                             data.push(e.resultset[i][0]);
                         }
                         line(cat, data);
                         console.log(data);
-                    });
+                    })
+                            .fail(function(){
+                                alert("Error");
+                        load.myValue = true;
+                    })
+                   */
                 /* $.ajax({
                     type: "POST",
                     url: url,

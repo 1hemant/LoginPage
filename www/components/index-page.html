@@ -1,0 +1,49 @@
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+
+<link rel="import" href="login-page.html" />
+
+<dom-module id="index-page" attributes="url">
+
+        <template>
+            <!--
+            <template is="dom-if" if="{{status == false}}">
+                <login-page status = "{{status}}"></login-page>
+            </template>
+            <template is="dom-if" if="{{status == true}}">
+                hello
+            </template>
+           -->
+           <login-page status="{{status}}"></login-page>
+    
+        </template>                          
+  
+
+    
+    <script>
+        Polymer({
+           is: "index-page",
+           properties:{
+               status: {
+                   type: Boolean,
+                   value: false,
+                   observer: 'statusObserver'
+               }
+           },
+           statusObserver: function(){
+                console.log("Index-page Observer: "+this.status);
+                if(this.status == true){
+                    console.log("In Started root");
+                    Polymer.dom(this.root).innerHTML = "<h1>I'm In</h1>";
+                    console.log("In Conpleted");
+                }
+                else{
+                    console.log("Out");
+                }
+           },
+           ready: function(){
+               console.log('Index-page Ready: '+this.status);
+           }
+        });
+    </script>
+
+</dom-module>
