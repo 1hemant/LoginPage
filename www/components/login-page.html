@@ -1,0 +1,109 @@
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="../js/login-page.js" type="text/javascript"></script>
+<link href="../css/login-page.css" rel="stylesheet" type="text/css"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html" />
+<link rel="import" href="../bower_components/paper-input/paper-input.html" />
+<link rel="import" href="../bower_components/iron-form/iron-form.html" />
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html" />
+<dom-module id="login-page" attributes="url">
+    <script>var urlLogin = "https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=DonutChart&parampWeekEnd=\'%@\'&parampDate=\'%@\'&parampFlag=\'%@\'&parampDistrict=\'%@\'&parampCity=\'%@\'&parampHour=\'%@\'&parampBTS=\'All\'&parampDonut=\'%@\</script>
+        <template>
+            <hgroup>
+              <h1>Netlink Login Form</h1>
+            </hgroup>
+            <form form is="iron-form" id="form" method="post" >
+                <div><paper-input id="txtUsername" label="Username" value="{{username}}" floatinglabel></paper-input></div>
+                <div><paper-input id="txtPassword" label="Password" type="password" value="{{password}}" floatinglabel></paper-input></div>
+                <div>
+                <paper-button type="submit" raisedbutton label="Custom Submit" on-tap="gologin">Log In</paper-button> 
+                </div>
+            </form>
+            <footer><a href="http://www.polymer-project.org/" target="_blank"><img src="../images/Netlink_logo.png" ></a>
+              <p>You Gotta Love <a href="http://www.netlink.com/" target="_blank">Netlink</a></p>
+            </footer>
+           
+    
+        </template>                          
+  
+
+    
+    <script>
+        Polymer({
+           is: "login-page",
+         /*  gologin: function(e) {
+                window.location.href = e.target.getAttribute('link');
+            },*/
+            gologin: function(e){
+                 //document.getElementById('form').submit();
+                 //console.log("Submitted");
+                 $.ajaxSetup({
+                    headers: {
+                      'Authorization': "Basic " + btoa('iostest@netlink.com' + ":" + 'test1234')
+                    }
+                  });
+                    var cat = [];
+                    var data = [];
+                    $.get(urlLogin).done(function (e) {
+                        console.log(e);
+                        for(i = 0; i < e.resultset.length; ++i){
+                            cat.push(e.resultset[i][3]);
+                            data.push(e.resultset[i][0]);
+                        }
+                        line(cat, data);
+                        console.log(data);
+                    });
+                /* $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: success,
+                    dataType: dataType
+                  });*/
+             }
+        });
+    </script>
+
+</dom-module>
+<!-- To get the table data 
+https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing%20Page/Telco%20Business%20Brain/Network%20Management/Network%20Insights.cda&dataAccessId=Table&parampWeekEnd_cde=%2230-Apr-2015%22&parampDate_cde=%22All%22&parampFlag_cde=%22All%22&parampDistrict_cde=%22All%22&parampCity_cde=%22All%22&parampHour_cde=%22All%22&parampBTS_cde=%22All%22&parampDonut_cde=%22All%22
+
+
+
+#define URL_LOGIN                           @"https://uat-analytics.thecarecloud.com/netlink/j_spring_security_check"
+
+#define URL_GET_CHART_DATA                  @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/UAT/Landing Page/Axletech/Categories/Financial Metric.cda&dataAccessId=DPO"
+
+#define URL_GET_REGION_DATA                 @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/UAT/Landing Page/theresultscompanies/Categories/Finance/Finance Dashboard.cda&dataAccessId=RegionDB"
+
+#define URL_GET_MONTH_DATA                  @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/UAT/Landing Page/theresultscompanies/Categories/Finance/Finance Dashboard.cda&dataAccessId=YearMonthDB"
+
+#define URL_GET_REGION_MONTH_DATA           @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/UAT/Landing Page/theresultscompanies/Categories/Finance/Finance Dashboard.cda&dataAccessId=Chart1_1DB&parampRegion=%@&parampMonth=%@"
+
+#define URL_GET_DATE_DETAIL                 @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/home/test/IOS App/IOS1.0.cda&dataAccessId=qry_Date"
+
+#define URL_GET_LOCATION_DETAIL             @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/home/test/IOS App/IOS1.0.cda&dataAccessId=qry_Location"
+
+#define URL_GET_GRAPH_DATA                  @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/home/test/IOS App/IOS1.0.cda&dataAccessId=qry_TotalHoursBySupplierName&parampStartDate=%@&parampEndDate=%@&parampLocation=All"
+
+#define URL_GET_USER_COFIG_INFO             @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/home/test/IOS App/IOS1.0.cda&dataAccessId=qry_Config"
+
+#define URL_GET_PIE_CHART                   @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=DonutChart&parampWeekEnd=\"%@\"&parampDate=\"%@\"&parampFlag=\"%@\"&parampDistrict=\"%@\"&parampCity=\"%@\"&parampHour=\"%@\"&parampBTS=\"All\"&parampDonut=\"%@\""
+
+#define URL_GET_WIDGET_GRAPH                @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=qry_Trend&parampWeekEnd=%@"
+
+#define URL_GET_WIDGET_INFO                 @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=qry_Widget&parampWeekEnd=%@"
+
+#define URL_GET_MAP_DATA                    @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=ktr_City_District&parampWeekEnd=\"%@\"&parampDate=\"%@\"&parampFlag=\"%@\"&parampDistrict=\"All\"&parampCity=\"All\"&parampHour=\"%@\"&parampBTS=\"All\"&parampDonut=\"%@\""
+
+#define URL_GET_DAY_WISE_DATA               @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=TimeSeries&parampWeekEnd=\"%@\"&parampDate=\"%@\"&parampFlag=\"%@\"&parampDistrict=\"%@\"&parampCity=\"%@\"&parampHour=\"%@\"&parampBTS=\"All\"&parampDonut=\"%@\""
+
+#define URL_GET_HOUR_WISE_DATA              @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=HourWiseRevenue&parampWeekEnd=\"%@\"&parampDate=\"%@\"&parampFlag=\"%@\"&parampDistrict=\"%@\"&parampCity=\"%@\"&parampHour=\"%@\"&parampBTS=\"All\"&parampDonut=\"%@\""
+
+#define URL_GET_TABLE_DATA                  @"https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/Demo/Landing Page/Telco Business Brain/Network Management/Network Insights.cda&dataAccessId=Table&parampWeekEnd_cde=\"%@\"&parampDate_cde=\"%@\"&parampFlag_cde=\"%@\"&parampDistrict_cde=\"%@\"&parampCity_cde=\"%@\"&parampHour_cde=\"%@\"&parampBTS_cde=\"All\"&parampDonut_cde=\"%@\""
+
+
+
+-->
+
+<!-- https://uat-analytics.thecarecloud.com/netlink/plugin/cda/api/doQuery?path=/public/UAT/Landing Page/Telecom Business Brain/Categories/Network Management/Network Insights.cda&dataAccessId=DonutChart&parampWeekEnd='26-Apr-2015'&parampDate='All'&parampFlag='All'&parampDistrict='All'&parampCity='All'&parampHour='All'&parampBTS='All'&parampDonut='All'  -->
